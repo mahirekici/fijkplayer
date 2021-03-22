@@ -18,8 +18,7 @@
 //AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-//SOFTWARE.dwefwewe
-//tst
+//SOFTWARE.
 
 part of fijkplayer;
 
@@ -495,6 +494,25 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     );
   }
 
+  GestureDetector buildGestureDetectorExitButton(BuildContext context) {
+    return GestureDetector(
+      onTap: onTapFun,
+      onDoubleTap: widget.doubleTap ? onDoubleTapFun : null,
+      onVerticalDragUpdate: onVerticalDragUpdateFun,
+      onVerticalDragStart: onVerticalDragStartFun,
+      onVerticalDragEnd: onVerticalDragEndFun,
+      onHorizontalDragUpdate: (d) {},
+      child: AbsorbPointer(
+        absorbing: _hideStuff,
+        child: AnimatedOpacity(
+          opacity: _hideStuff ? 0 : 1,
+          duration: Duration(milliseconds: 300),
+          child: buildBackToRight(context),
+        ),
+      ),
+    );
+  }
+
   Rect panelRect() {
     Rect rect = player.value.fullScreen || (true == widget.fill)
         ? Rect.fromLTWH(0, 0, widget.viewSize.width, widget.viewSize.height)
@@ -528,10 +546,18 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     return IconButton(
       padding: EdgeInsets.only(left: 5),
       icon: Icon(
-        Icons.arrow_back_ios,
+        Icons.close,
         color: Color(0xDDFFFFFF),
+        size: 25,
       ),
       onPressed: widget.onBack,
+    );
+  }
+
+  Widget buildBackToRight(BuildContext context) {
+    return Align(
+      alignment: Alignment.topRight,
+      child: buildBack(context),
     );
   }
 
@@ -606,9 +632,16 @@ class __FijkPanel2State extends State<_FijkPanel2> {
       ws.add(buildStateless());
     }
     ws.add(buildGestureDetector(context));
-    if (widget.onBack != null) {
-      ws.add(buildBack(context));
-    }
+
+    ws.add(buildGestureDetectorExitButton(context));
+
+    // if (widget.onBack != null) {
+    //   ws.add(Align(
+    //     alignment: Alignment.topRight,
+    //     child: buildBack(context),
+    //   ));
+    // }
+
     return Positioned.fromRect(
       rect: rect,
       child: Stack(children: ws),

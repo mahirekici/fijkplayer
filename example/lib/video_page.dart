@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +44,12 @@ class _VideoScreenState extends State<VideoScreen> {
         child: Center(
           child: FijkView(
             player: player,
-            panelBuilder: fijkPanel2Builder(snapShot: true),
+            panelBuilder: fijkPanel2Builder(
+              snapShot: true,
+              onBack: () {
+                exit(0);
+              },
+            ),
             fsFit: FijkFit.fill,
             // panelBuilder: simplestUI,
             // panelBuilder: (FijkPlayer player, BuildContext context,

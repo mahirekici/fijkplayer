@@ -555,9 +555,12 @@ class __FijkPanel2State extends State<_FijkPanel2> {
   }
 
   Widget buildBackToRight(BuildContext context) {
-    return Align(
-      alignment: Alignment.topRight,
-      child: buildBack(context),
+    return Container(
+      margin: const EdgeInsets.only(left: 00.0, right: 10.0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: buildBack(context),
+      ),
     );
   }
 

@@ -22,13 +22,15 @@
 
 part of fijkplayer;
 
-FijkPanelWidgetBuilder fijkPanel2Builder(
-    {Key key,
-    final bool fill = false,
-    final int duration = 4000,
-    final bool doubleTap = true,
-    final bool snapShot = false,
-    final VoidCallback onBack}) {
+FijkPanelWidgetBuilder fijkPanel2Builder({
+  Key key,
+  final bool fill = false,
+  final int duration = 4000,
+  final bool doubleTap = true,
+  final bool snapShot = false,
+  final VoidCallback onBack,
+  final VoidCallback onPipBack,
+}) {
   return (FijkPlayer player, FijkData data, BuildContext context, Size viewSize,
       Rect texturePos) {
     return _FijkPanel2(
@@ -36,6 +38,7 @@ FijkPanelWidgetBuilder fijkPanel2Builder(
       player: player,
       data: data,
       onBack: onBack,
+      onPipCallBack: onPipBack,
       viewSize: viewSize,
       texPos: texturePos,
       fill: fill,

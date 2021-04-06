@@ -50,6 +50,7 @@ class _FijkPanel2 extends StatefulWidget {
   final FijkPlayer player;
   final FijkData data;
   final VoidCallback onBack;
+  final VoidCallback onPipCallBack;
   final Size viewSize;
   final Rect texPos;
   final bool fill;
@@ -63,6 +64,7 @@ class _FijkPanel2 extends StatefulWidget {
       this.data,
       this.fill,
       this.onBack,
+      this.onPipCallBack,
       this.viewSize,
       this.hideDuration,
       this.doubleTap,
@@ -513,6 +515,25 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     );
   }
 
+  GestureDetector buildGestureDetectorPipButton(BuildContext context) {
+    return GestureDetector(
+      onTap: onTapFun,
+      onDoubleTap: widget.doubleTap ? onDoubleTapFun : null,
+      onVerticalDragUpdate: onVerticalDragUpdateFun,
+      onVerticalDragStart: onVerticalDragStartFun,
+      onVerticalDragEnd: onVerticalDragEndFun,
+      onHorizontalDragUpdate: (d) {},
+      child: AbsorbPointer(
+        absorbing: _hideStuff,
+        child: AnimatedOpacity(
+          opacity: _hideStuff ? 0 : 1,
+          duration: Duration(milliseconds: 300),
+          child: buildPipToRight(context),
+        ),
+      ),
+    );
+  }
+
   Rect panelRect() {
     Rect rect = player.value.fullScreen || (true == widget.fill)
         ? Rect.fromLTWH(0, 0, widget.viewSize.width, widget.viewSize.height)
@@ -554,12 +575,34 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     );
   }
 
+  Widget buildPip(BuildContext context) {
+    return IconButton(
+      padding: EdgeInsets.only(left: 5, top: 25),
+      icon: Icon(
+        Icons.picture_in_picture,
+        color: Color(0xDDFFFFFF),
+        size: 25,
+      ),
+      onPressed: widget.onPipCallBack,
+    );
+  }
+
   Widget buildBackToRight(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 00.0, right: 10.0),
+      margin: const EdgeInsets.only(left: 00.0, right: 13.0, top: 10),
       child: Align(
         alignment: Alignment.topRight,
         child: buildBack(context),
+      ),
+    );
+  }
+
+  Widget buildPipToRight(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(left: 10),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: buildPip(context),
       ),
     );
   }
@@ -637,6 +680,8 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     ws.add(buildGestureDetector(context));
 
     ws.add(buildGestureDetectorExitButton(context));
+
+    ws.add(buildGestureDetectorPipButton(context));
 
     // if (widget.onBack != null) {
     //   ws.add(Align(
